@@ -2,7 +2,9 @@
 """Filtering module
 """
 
+import os
 import re
+import mysql.connector
 from typing import List
 import logging
 
@@ -56,3 +58,15 @@ def get_logger() -> logging.Logger:
     logger.addHandler(stream_handler)
 
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """Return a connector to the database.
+    """
+    config = {
+        "host": os.getenv("PERSONAL_DATA_DB_HOST", "localhost"),
+        "database": os.getenv("PERSONAL_DATA_DB_NAME"),
+        "user": os.getenv("PERSONAL_DATA_DB_USERNAME", "root"),
+        "password": os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    }
+    return mysql.connector.connect(**config)
