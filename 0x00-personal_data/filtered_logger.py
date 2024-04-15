@@ -47,7 +47,8 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
-    """Return a logging.Logger object."""
+    """Return a logging.Logger object.
+    """
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
     logger.propagate = False
@@ -70,3 +71,26 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         "password": os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     }
     return mysql.connector.connect(**config)
+
+
+def main() -> None:
+    """Main function that fetches rows from the database and logs them."""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users;")
+    fields = [i[0] for i in cursor.description]
+
+    logger = get_logger()
+
+    for row in cursor:
+        row_dict = dict(zip(fields, row))
+        log_record = "; ".join(
+            [f"{key}={value}" for key, value in row_dict.items()]) + ";"
+        logger.info(log_record)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
