@@ -2,6 +2,7 @@
 """Module to Manage the API Authentication
 """
 
+import fnmatch
 from typing import List, TypeVar
 
 User = TypeVar('User')
@@ -20,6 +21,9 @@ class Auth:
             path += '/'
         if path in excluded_paths:
             return False
+        for excluded_path in excluded_paths:
+            if fnmatch.fnmatch(path, excluded_path):
+                return False
         return True
 
     def authorization_header(self, request=None) -> str:
