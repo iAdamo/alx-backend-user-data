@@ -4,6 +4,8 @@
 
 from typing import List, TypeVar
 
+User = TypeVar('User')
+
 
 class Auth:
     """Auth class to manage the API authentication
@@ -27,7 +29,7 @@ class Auth:
             return None
         return request.headers.get("Authorization", None)
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> User:
         """Method to get the current user
         """
         return None
