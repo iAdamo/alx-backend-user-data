@@ -4,7 +4,6 @@
 
 from datetime import datetime
 from os import getenv
-from typing_extensions import runtime
 from api.v1.auth.session_auth import SessionAuth
 
 
