@@ -2,11 +2,10 @@
 """DB module
 """
 
-from user import Base
+from user import Base, User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from user import User
 
 
 class DB:
@@ -37,3 +36,8 @@ class DB:
         self._session.add(new_user)
         self._session.commit()
         return new_user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user by a given attribute
+        """
+        return self._session.query(User).filter_by(**kwargs).one()
